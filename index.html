@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Login</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 420px;
+            background: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 10px;
+            padding: 24px;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: #222222;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #666666;
+            margin-bottom: 18px;
+        }
+
+        .switch {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+
+        .switch button {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #cccccc;
+            background: #f8f8f8;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+
+        .switch button.active {
+            background: #2563eb;
+            color: #ffffff;
+            border-color: #2563eb;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #bfbfbf;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            margin-top: 8px;
+            padding: 11px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .submit-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .status {
+            min-height: 18px;
+            margin-top: 8px;
+            font-size: 14px;
+        }
+
+        .success {
+            color: #0f766e;
+        }
+
+        .error {
+            color: #dc2626;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .direct-link {
+            margin-top: 14px;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .direct-link a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .direct-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1 id="title">Login</h1>
+        <p class="subtitle" id="subtitle">Enter your details to continue.</p>
+
+        <div class="switch">
+            <button id="login-tab" type="button" class="active">Login</button>
+            <button id="signup-tab" type="button">Sign Up</button>
+        </div>
+
+        <form id="login-form">
+            <div class="form-group">
+                <label for="login-email">Email</label>
+                <input id="login-email" type="email" required />
+            </div>
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input id="login-password" type="password" required />
+            </div>
+            <button class="submit-btn" type="submit">Login</button>
+            <p class="status" id="login-status"></p>
+        </form>
+
+        <form id="signup-form" class="hidden">
+            <div class="form-group">
+                <label for="signup-name">Full Name</label>
+                <input id="signup-name" type="text" required />
+            </div>
+            <div class="form-group">
+                <label for="signup-email">Email</label>
+                <input id="signup-email" type="email" required />
+            </div>
+            <div class="form-group">
+                <label for="signup-password">Password</label>
+                <input id="signup-password" type="password" required />
+            </div>
+            <button class="submit-btn" type="submit">Create Account</button>
+            <p class="status" id="signup-status"></p>
+        </form>
+
+        <p class="direct-link">
+            Open todo page directly:
+            <a href="todo list.html">todo list.html</a>
+        </p>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById("login-form");
+        const signupForm = document.getElementById("signup-form");
+        const loginTab = document.getElementById("login-tab");
+        const signupTab = document.getElementById("signup-tab");
+        const title = document.getElementById("title");
+        const subtitle = document.getElementById("subtitle");
+
+        const USERS_KEY = "simple_app_users";
+        const SESSION_KEY = "simple_app_session";
+        const TODO_URL = "dashboard.html";
+
+        function getUsers() {
+            return JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
+        }
+
+        function setSession(user) {
+            localStorage.setItem(
+                SESSION_KEY,
+                JSON.stringify({ name: user.name, email: user.email })
+            );
+        }
+
+        function setStatus(id, message, ok) {
+            const el = document.getElementById(id);
+            el.textContent = message;
+            el.className = "status " + (ok ? "success" : "error");
+        }
+
+        function showLogin() {
+            loginForm.classList.remove("hidden");
+            signupForm.classList.add("hidden");
+            loginTab.classList.add("active");
+            signupTab.classList.remove("active");
+            title.textContent = "Login";
+            subtitle.textContent = "Enter your details to continue.";
+            setStatus("login-status", "", true);
+            setStatus("signup-status", "", true);
+        }
+
+        function showSignup() {
+            loginForm.classList.add("hidden");
+            signupForm.classList.remove("hidden");
+            loginTab.classList.remove("active");
+            signupTab.classList.add("active");
+            title.textContent = "Create Account";
+            subtitle.textContent = "Sign up to start using your todo page.";
+            setStatus("login-status", "", true);
+            setStatus("signup-status", "", true);
+        }
+
+        loginTab.addEventListener("click", showLogin);
+        signupTab.addEventListener("click", showSignup);
+
+        loginForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const email = document.getElementById("login-email").value.trim();
+            const password = document.getElementById("login-password").value;
+            const user = getUsers().find(
+                (entry) => entry.email === email && entry.password === password
+            );
+
+            if (!user) {
+                setStatus("login-status", "Invalid email or password.", false);
+                return;
+            }
+
+            setSession(user);
+            window.location.href = TODO_URL;
+        });
+
+        signupForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const name = document.getElementById("signup-name").value.trim();
+            const email = document.getElementById("signup-email").value.trim();
+            const password = document.getElementById("signup-password").value;
+            const users = getUsers();
+
+            if (users.some((entry) => entry.email === email)) {
+                setStatus("signup-status", "Email already registered.", false);
+                return;
+            }
+
+            users.push({ name, email, password });
+            localStorage.setItem(USERS_KEY, JSON.stringify(users));
+            setSession({ name, email });
+            window.location.href = TODO_URL;
+        });
+    </script>
+</body>
+</html>

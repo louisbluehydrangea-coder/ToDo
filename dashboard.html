@@ -1,0 +1,1612 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Academic Atelier</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #f7f9fb;
+      --surface: #ffffff;
+      --surface-low: #f0f4f7;
+      --surface-mid: #e8eff3;
+      --surface-high: #e1e9ee;
+      --surface-highest: #d9e4ea;
+      --on-bg: #2a3439;
+      --on-surface: #2a3439;
+      --on-muted: #566166;
+      --outline: #a9b4b9;
+      --blue: #005bc4;
+      --blue-dim: #004fad;
+      --blue-container: #d8e2ff;
+      --on-blue: #f9f8ff;
+      --on-blue-container: #004eaa;
+      --tertiary: #5d5c78;
+      --tertiary-container: #d9d7f8;
+      --primary: #565e74;
+      --primary-container: #dae2fd;
+      --error: #9f403d;
+      --error-container: #fe8983;
+      --shadow: 0 4px 20px rgba(42, 52, 57, 0.06), 0 8px 40px rgba(42, 52, 57, 0.06);
+      --radius: 12px;
+      --sidebar-w: 220px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--on-bg);
+      min-height: 100vh;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+      font-size: 20px;
+    }
+
+    /* ── LAYOUT ── */
+    .app {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: #f1f4f8;
+      display: flex;
+      flex-direction: column;
+      padding: 24px 16px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      border-right: 1px solid var(--surface-high);
+      z-index: 100;
+    }
+
+    .sidebar-brand {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--on-bg);
+      margin-bottom: 32px;
+      padding: 0 8px;
+    }
+
+    .sidebar-brand span {
+      display: block;
+      font-weight: 400;
+      font-size: 11px;
+      color: var(--on-muted);
+      letter-spacing: 0.05em;
+      margin-top: 2px;
+    }
+
+    nav {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #64748b;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+
+    .nav-link:hover {
+      background: #e2e8f0;
+      color: var(--on-bg);
+    }
+
+    .nav-link.active {
+      background: var(--blue-container);
+      color: var(--blue);
+      font-weight: 600;
+    }
+
+    .nav-link.active .material-symbols-outlined {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    .sidebar-footer {
+      padding: 12px;
+      border-top: 1px solid var(--surface-high);
+      font-size: 12px;
+      color: var(--on-muted);
+    }
+
+    .sidebar-footer strong {
+      display: block;
+      color: var(--on-bg);
+      font-size: 13px;
+    }
+
+    /* TOPBAR */
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: var(--sidebar-w);
+      right: 0;
+      height: 56px;
+      background: rgba(247, 249, 251, 0.9);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      border-bottom: 1px solid var(--surface-high);
+      z-index: 90;
+    }
+
+    .topbar-search {
+      position: relative;
+      width: 280px;
+    }
+
+    .topbar-search .material-symbols-outlined {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      color: var(--on-muted);
+    }
+
+    .topbar-search input {
+      width: 100%;
+      padding: 7px 12px 7px 34px;
+      border: 1px solid var(--surface-high);
+      border-radius: 8px;
+      font-size: 13px;
+      background: var(--surface);
+      color: var(--on-bg);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .topbar-search input:focus {
+      border-color: var(--blue);
+    }
+
+    .topbar-search input::placeholder {
+      color: var(--outline);
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .icon-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      border: none;
+      background: none;
+      color: var(--on-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .icon-btn:hover {
+      background: var(--surface-mid);
+      color: var(--on-bg);
+    }
+
+    /* MAIN */
+    .main {
+      margin-left: var(--sidebar-w);
+      padding-top: 56px;
+      flex: 1;
+      min-height: 100vh;
+    }
+
+    .page {
+      display: none;
+      padding: 32px 32px 48px;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* PAGE HEADER */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 28px;
+    }
+
+    .page-header h1 {
+      font-size: 28px;
+      font-weight: 300;
+      letter-spacing: -0.5px;
+    }
+
+    .page-header p {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--on-muted);
+      margin-bottom: 6px;
+    }
+
+    /* BUTTONS */
+    .btn {
+      padding: 8px 18px;
+      border-radius: 8px;
+      border: none;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn-primary {
+      background: var(--blue);
+      color: var(--on-blue);
+    }
+
+    .btn-primary:hover {
+      opacity: 0.9;
+    }
+
+    .btn-secondary {
+      background: var(--blue-container);
+      color: var(--on-blue-container);
+    }
+
+    .btn-secondary:hover {
+      opacity: 0.85;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--on-muted);
+      border: 1px solid var(--outline);
+    }
+
+    .btn-ghost:hover {
+      background: var(--surface-low);
+      color: var(--on-bg);
+    }
+
+    .btn-danger {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .btn-danger:hover {
+      opacity: 0.85;
+    }
+
+    .btn-sm {
+      padding: 5px 12px;
+      font-size: 12px;
+    }
+
+    /* CARDS */
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    /* ── DASHBOARD ── */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card .icon-bg {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      opacity: 0.08;
+      font-size: 52px !important;
+    }
+
+    .stat-card .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--on-muted);
+      margin-bottom: 12px;
+    }
+
+    .stat-card .value {
+      font-size: 42px;
+      font-weight: 300;
+      letter-spacing: -1px;
+      line-height: 1;
+    }
+
+    .stat-card .sub {
+      font-size: 12px;
+      color: var(--on-muted);
+      margin-top: 10px;
+    }
+
+    .stat-card .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #059669;
+      background: #d1fae5;
+      padding: 2px 7px;
+      border-radius: 20px;
+      margin-left: 8px;
+    }
+
+    .stat-card.blue {
+      background: var(--blue-container);
+    }
+
+    .stat-card.blue .label {
+      color: var(--on-blue-container);
+      opacity: 0.7;
+    }
+
+    .stat-card.blue .value {
+      color: var(--on-blue-container);
+    }
+
+    .stat-card.blue .sub {
+      color: var(--on-blue-container);
+      opacity: 0.65;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 99px;
+      margin-top: 14px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--blue);
+      border-radius: 99px;
+      transition: width 0.5s ease;
+    }
+
+    .stat-card.blue .progress-fill {
+      background: var(--on-blue-container);
+    }
+
+    .dash-grid {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 16px;
+    }
+
+    .activity-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .activity-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      transition: background 0.15s;
+    }
+
+    .activity-item:hover {
+      background: var(--surface-low);
+    }
+
+    .activity-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .activity-item .info {
+      flex: 1;
+    }
+
+    .activity-item .info p {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .activity-item .info span {
+      font-size: 12px;
+      color: var(--on-muted);
+    }
+
+    .status-chip {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    .chip-pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .chip-done {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .chip-active {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .chip-inactive {
+      background: var(--surface-mid);
+      color: var(--on-muted);
+    }
+
+    .card-header {
+      padding: 20px 20px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--surface-low);
+    }
+
+    .card-header h3 {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .card-body {
+      padding: 8px;
+    }
+
+    /* ── MEMBERS ── */
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      gap: 12px;
+    }
+
+    .search-wrap {
+      position: relative;
+      flex: 1;
+      max-width: 320px;
+    }
+
+    .search-wrap .material-symbols-outlined {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      color: var(--on-muted);
+    }
+
+    .search-wrap input {
+      width: 100%;
+      padding: 8px 12px 8px 34px;
+      border: 1px solid var(--surface-high);
+      border-radius: 8px;
+      font-size: 13px;
+      background: var(--surface);
+      color: var(--on-bg);
+      outline: none;
+    }
+
+    .search-wrap input:focus {
+      border-color: var(--blue);
+    }
+
+    .search-wrap input::placeholder {
+      color: var(--outline);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background: var(--surface-low);
+    }
+
+    th {
+      padding: 11px 16px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--on-muted);
+      text-align: left;
+    }
+
+    td {
+      padding: 14px 16px;
+      font-size: 14px;
+      border-bottom: 1px solid var(--surface-low);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr {
+      transition: background 0.12s;
+    }
+
+    tbody tr:hover {
+      background: var(--surface-low);
+    }
+
+    .member-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--primary-container);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .member-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .member-info .name {
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .member-info .sub {
+      font-size: 11px;
+      color: var(--on-muted);
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px;
+    }
+
+    .dot.green {
+      background: #10b981;
+      box-shadow: 0 0 6px rgba(16, 185, 129, 0.4);
+    }
+
+    .dot.gray {
+      background: #94a3b8;
+    }
+
+    .actions {
+      display: flex;
+      gap: 4px;
+      justify-content: flex-end;
+    }
+
+    .action-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 7px;
+      border: none;
+      background: none;
+      color: var(--on-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.12s, color 0.12s;
+      font-size: 16px;
+    }
+
+    .action-btn:hover {
+      background: var(--surface-mid);
+      color: var(--on-bg);
+    }
+
+    .action-btn.del:hover {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .table-footer {
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--on-muted);
+      border-top: 1px solid var(--surface-low);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--on-muted);
+    }
+
+    .empty-state .material-symbols-outlined {
+      font-size: 40px !important;
+      opacity: 0.4;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .empty-state p {
+      font-size: 14px;
+    }
+
+    /* ── MODAL ── */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(3px);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--surface);
+      border-radius: 16px;
+      width: 440px;
+      max-width: calc(100vw - 32px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      animation: pop 0.2s ease;
+    }
+
+    @keyframes pop {
+      from {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .modal-header {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--surface-low);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h2 {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .modal-body {
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .modal-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--surface-low);
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .field label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--on-muted);
+    }
+
+    .field input,
+    .field select {
+      padding: 9px 12px;
+      border: 1px solid var(--surface-high);
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: 'Inter', sans-serif;
+      color: var(--on-bg);
+      background: var(--surface-low);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--blue);
+      background: var(--surface);
+    }
+
+    /* ── PAYMENTS ── */
+    .pay-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .pay-stat {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .pay-stat .label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--on-muted);
+      margin-bottom: 8px;
+    }
+
+    .pay-stat .amount {
+      font-size: 28px;
+      font-weight: 300;
+      letter-spacing: -0.5px;
+    }
+
+    .pay-stat .count {
+      font-size: 12px;
+      color: var(--on-muted);
+      margin-top: 4px;
+    }
+
+    .add-payment-form {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+
+    .add-payment-form h3 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    .pay-form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 140px 120px;
+      gap: 10px;
+      align-items: flex-end;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .badge-completed {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .badge-pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .badge-refunded {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    /* TOAST */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .toast {
+      background: #1e293b;
+      color: #f1f5f9;
+      padding: 11px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 500;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      animation: slideUp 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toast.success .material-symbols-outlined {
+      color: #34d399;
+    }
+
+    .toast.error .material-symbols-outlined {
+      color: #f87171;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* CONFIRM MODAL */
+    .confirm-modal {
+      max-width: 360px;
+    }
+
+    .confirm-modal .modal-body {
+      text-align: center;
+      padding: 28px 24px;
+    }
+
+    .confirm-modal .modal-body .material-symbols-outlined {
+      font-size: 40px !important;
+      color: #ef4444;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .confirm-modal .modal-body p {
+      font-size: 14px;
+      color: var(--on-muted);
+      margin-top: 6px;
+    }
+
+    /* SECTION HEADING */
+    .section-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--on-muted);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        Academic Atelier
+        <span>Administrator</span>
+      </div>
+      <nav>
+        <button class="nav-link active" onclick="showPage('dashboard')">
+          <span class="material-symbols-outlined">dashboard</span> Dashboard
+        </button>
+        <button class="nav-link" onclick="showPage('members')">
+          <span class="material-symbols-outlined">group</span> Members
+        </button>
+        <button class="nav-link" onclick="showPage('payments')">
+          <span class="material-symbols-outlined">payments</span> Payments
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <strong>Admin User</strong>
+        Principal Lead
+      </div>
+    </aside>
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <div class="topbar-search">
+        <span class="material-symbols-outlined">search</span>
+        <input type="text" id="global-search" placeholder="Search..." oninput="handleSearch(this.value)" />
+      </div>
+      <div class="topbar-right">
+        <button class="icon-btn"><span class="material-symbols-outlined">notifications</span></button>
+        <button class="icon-btn"><span class="material-symbols-outlined">settings</span></button>
+      </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- DASHBOARD PAGE -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-header">
+          <div>
+            <p class="section-label">Overview</p>
+            <h1>Dashboard</h1>
+          </div>
+          <button class="btn btn-primary" onclick="showPage('members')">
+            <span class="material-symbols-outlined">person_add</span> Add Member
+          </button>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <span class="material-symbols-outlined icon-bg">group</span>
+            <div class="label">Total Members</div>
+            <div class="value" id="dash-total-members">0</div>
+            <div class="sub">Active scholars enrolled</div>
+          </div>
+          <div class="stat-card">
+            <span class="material-symbols-outlined icon-bg">payments</span>
+            <div class="label">Total Revenue</div>
+            <div class="value" id="dash-total-revenue">$0</div>
+            <div class="sub">All time payments collected</div>
+          </div>
+          <div class="stat-card blue">
+            <span class="material-symbols-outlined icon-bg">check_circle</span>
+            <div class="label">Active Members</div>
+            <div class="value" id="dash-active-members">0</div>
+            <div id="dash-capacity-label" class="sub">0% of total</div>
+            <div class="progress-bar">
+              <div class="progress-fill" id="dash-progress" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-grid">
+          <div class="card">
+            <div class="card-header">
+              <h3>Recent Members</h3>
+              <button class="btn btn-ghost btn-sm" onclick="showPage('members')">View all</button>
+            </div>
+            <div class="card-body" id="dash-recent-members">
+              <div class="empty-state">
+                <span class="material-symbols-outlined">person</span>
+                <p>No members yet</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3>Recent Payments</h3>
+              <button class="btn btn-ghost btn-sm" onclick="showPage('payments')">View all</button>
+            </div>
+            <div class="card-body" id="dash-recent-payments">
+              <div class="empty-state">
+                <span class="material-symbols-outlined">receipt</span>
+                <p>No payments yet</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MEMBERS PAGE -->
+      <div class="page" id="page-members">
+        <div class="page-header">
+          <div>
+            <p class="section-label">Directory</p>
+            <h1>Members</h1>
+          </div>
+          <button class="btn btn-primary" onclick="openMemberModal()">
+            <span class="material-symbols-outlined">person_add</span> Add Member
+          </button>
+        </div>
+
+        <div class="toolbar">
+          <div class="search-wrap">
+            <span class="material-symbols-outlined">search</span>
+            <input type="text" id="member-search" placeholder="Search members..." oninput="filterMembers(this.value)" />
+          </div>
+        </div>
+
+        <div class="card">
+          <table>
+            <thead>
+              <tr>
+                <th>Member</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Date of Birth</th>
+                <th>Status</th>
+                <th style="text-align:right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="members-tbody"></tbody>
+          </table>
+          <div class="table-footer">
+            <span id="members-count">0 members</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAYMENTS PAGE -->
+      <div class="page" id="page-payments">
+        <div class="page-header">
+          <div>
+            <p class="section-label">Financials</p>
+            <h1>Payments</h1>
+          </div>
+        </div>
+
+        <div class="pay-stats">
+          <div class="pay-stat">
+            <div class="label">Total Collected</div>
+            <div class="amount" id="pay-total">$0</div>
+            <div class="count" id="pay-total-count">0 transactions</div>
+          </div>
+          <div class="pay-stat">
+            <div class="label">Completed</div>
+            <div class="amount" id="pay-completed">$0</div>
+            <div class="count" id="pay-completed-count">0 transactions</div>
+          </div>
+          <div class="pay-stat">
+            <div class="label">Pending</div>
+            <div class="amount" id="pay-pending">$0</div>
+            <div class="count" id="pay-pending-count">0 transactions</div>
+          </div>
+        </div>
+
+        <div class="add-payment-form">
+          <h3>Record a Payment</h3>
+          <div class="pay-form-row">
+            <div class="field">
+              <label>Member</label>
+              <select id="pay-member">
+                <option value="">Select member...</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Amount ($)</label>
+              <input type="number" id="pay-amount" placeholder="0.00" min="0" step="0.01" />
+            </div>
+            <div class="field">
+              <label>Status</label>
+              <select id="pay-status">
+                <option value="Completed">Completed</option>
+                <option value="Pending">Pending</option>
+                <option value="Refunded">Refunded</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" onclick="addPayment()">
+              <span class="material-symbols-outlined">add</span> Add
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <table>
+            <thead>
+              <tr>
+                <th>Member</th>
+                <th style="text-align:right">Amount</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th style="text-align:right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="payments-tbody"></tbody>
+          </table>
+          <div class="table-footer">
+            <span id="payments-count">0 transactions</span>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- MEMBER MODAL -->
+  <div class="overlay" id="member-modal-overlay" onclick="closeModalOutside(event)">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modal-title">Add Member</h2>
+        <button class="icon-btn" onclick="closeMemberModal()"><span
+            class="material-symbols-outlined">close</span></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="edit-id" />
+        <div class="field">
+          <label>Full Name</label>
+          <input type="text" id="m-name" placeholder="e.g. Jane Doe" />
+        </div>
+        <div class="field">
+          <label>Email Address</label>
+          <input type="email" id="m-email" placeholder="jane@example.com" />
+        </div>
+        <div class="field">
+          <label>Phone Number</label>
+          <input type="tel" id="m-phone" placeholder="+1 234 567 8900" />
+        </div>
+        <div class="field">
+          <label>Date of Birth</label>
+          <input type="date" id="m-dob" />
+        </div>
+        <div class="field">
+          <label>Status</label>
+          <select id="m-status">
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeMemberModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveMember()">Save Member</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIRM DELETE MODAL -->
+  <div class="overlay" id="confirm-overlay" onclick="closeConfirmOutside(event)">
+    <div class="modal confirm-modal">
+      <div class="modal-header">
+        <h2>Confirm Delete</h2>
+        <button class="icon-btn" onclick="closeConfirm()"><span class="material-symbols-outlined">close</span></button>
+      </div>
+      <div class="modal-body">
+        <span class="material-symbols-outlined">delete_forever</span>
+        <strong id="confirm-name">Member Name</strong>
+        <p>This action cannot be undone. The member will be permanently removed.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeConfirm()">Cancel</button>
+        <button class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <script>
+    // ── DATA ──
+    const SESSION_KEY = 'simple_app_session';
+    const sessionUser = JSON.parse(localStorage.getItem(SESSION_KEY) || '{}');
+    const userIdPart = (sessionUser.email || 'guest').toLowerCase();
+    const MEMBERS_KEY = `aa_members_${userIdPart}`;
+    const PAYMENTS_KEY = `aa_payments_${userIdPart}`;
+
+    let members = JSON.parse(localStorage.getItem(MEMBERS_KEY) || '[]');
+    let payments = JSON.parse(localStorage.getItem(PAYMENTS_KEY) || '[]');
+    let deleteTarget = null; // { type: 'member'|'payment', id }
+
+    function saveMembers() { localStorage.setItem(MEMBERS_KEY, JSON.stringify(members)); }
+    function savePayments() { localStorage.setItem(PAYMENTS_KEY, JSON.stringify(payments)); }
+
+    function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+
+    function initials(name) {
+      return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+    }
+
+    const AVATAR_COLORS = [
+      ['#dae2fd', '#565e74'], ['#d8e2ff', '#004eaa'], ['#d9d7f8', '#4a4a65'],
+      ['#d1fae5', '#065f46'], ['#fef3c7', '#92400e'], ['#fee2e2', '#b91c1c'],
+    ];
+    function avatarColor(name) {
+      let n = 0; for (let c of name) n += c.charCodeAt(0);
+      return AVATAR_COLORS[n % AVATAR_COLORS.length];
+    }
+
+    // ── NAV ──
+    function showPage(name) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+      document.getElementById('page-' + name).classList.add('active');
+      document.querySelectorAll('.nav-link').forEach(l => {
+        if (l.textContent.trim().toLowerCase().startsWith(name)) l.classList.add('active');
+      });
+      if (name === 'dashboard') renderDashboard();
+      if (name === 'members') renderMembers();
+      if (name === 'payments') { renderPayments(); populateMemberSelect(); }
+    }
+
+    // ── TOAST ──
+    function toast(msg, type = 'success') {
+      const el = document.createElement('div');
+      el.className = `toast ${type}`;
+      el.innerHTML = `<span class="material-symbols-outlined">${type === 'success' ? 'check_circle' : 'error'}</span>${msg}`;
+      document.getElementById('toast-container').appendChild(el);
+      setTimeout(() => el.remove(), 3000);
+    }
+
+    // ── MEMBER MODAL ──
+    function openMemberModal(id = null) {
+      document.getElementById('edit-id').value = id || '';
+      document.getElementById('m-name').value = '';
+      document.getElementById('m-email').value = '';
+      document.getElementById('m-phone').value = '';
+      document.getElementById('m-dob').value = '';
+      document.getElementById('m-status').value = 'Active';
+
+      if (id) {
+        const m = members.find(x => x.id === id);
+        if (m) {
+          document.getElementById('modal-title').textContent = 'Edit Member';
+          document.getElementById('m-name').value = m.name;
+          document.getElementById('m-email').value = m.email;
+          document.getElementById('m-phone').value = m.phone;
+          document.getElementById('m-dob').value = m.dob;
+          document.getElementById('m-status').value = m.status;
+        }
+      } else {
+        document.getElementById('modal-title').textContent = 'Add Member';
+      }
+      document.getElementById('member-modal-overlay').classList.add('open');
+      document.getElementById('m-name').focus();
+    }
+
+    function closeMemberModal() {
+      document.getElementById('member-modal-overlay').classList.remove('open');
+    }
+
+    function closeModalOutside(e) {
+      if (e.target.id === 'member-modal-overlay') closeMemberModal();
+    }
+
+    function saveMember() {
+      const id = document.getElementById('edit-id').value;
+      const name = document.getElementById('m-name').value.trim();
+      const email = document.getElementById('m-email').value.trim();
+      const phone = document.getElementById('m-phone').value.trim();
+      const dob = document.getElementById('m-dob').value;
+      const status = document.getElementById('m-status').value;
+
+      if (!name) { toast('Name is required', 'error'); return; }
+      if (!email) { toast('Email is required', 'error'); return; }
+
+      if (id) {
+        const idx = members.findIndex(m => m.id === id);
+        if (idx !== -1) members[idx] = { ...members[idx], name, email, phone, dob, status };
+        toast('Member updated');
+      } else {
+        members.unshift({ id: genId(), name, email, phone, dob, status, createdAt: Date.now() });
+        toast('Member added');
+      }
+      saveMembers();
+      closeMemberModal();
+      renderMembers();
+      renderDashboard();
+      populateMemberSelect();
+    }
+
+    // ── DELETE ──
+    function promptDelete(type, id, name) {
+      deleteTarget = { type, id };
+      document.getElementById('confirm-name').textContent = name;
+      document.getElementById('confirm-overlay').classList.add('open');
+    }
+    function closeConfirm() {
+      document.getElementById('confirm-overlay').classList.remove('open');
+      deleteTarget = null;
+    }
+    function closeConfirmOutside(e) {
+      if (e.target.id === 'confirm-overlay') closeConfirm();
+    }
+    function confirmDelete() {
+      if (!deleteTarget) return;
+      const { type, id } = deleteTarget;
+      if (type === 'member') {
+        members = members.filter(m => m.id !== id);
+        saveMembers();
+        renderMembers();
+        renderDashboard();
+        populateMemberSelect();
+        toast('Member deleted');
+      } else if (type === 'payment') {
+        payments = payments.filter(p => p.id !== id);
+        savePayments();
+        renderPayments();
+        renderDashboard();
+        toast('Payment deleted');
+      }
+      closeConfirm();
+    }
+
+    // ── RENDER MEMBERS ──
+    function renderMembers(filter = '') {
+      const tbody = document.getElementById('members-tbody');
+      const filtered = filter
+        ? members.filter(m =>
+          m.name.toLowerCase().includes(filter) ||
+          m.email.toLowerCase().includes(filter) ||
+          (m.phone && m.phone.includes(filter))
+        )
+        : members;
+
+      document.getElementById('members-count').textContent = `${filtered.length} member${filtered.length !== 1 ? 's' : ''}`;
+
+      if (!filtered.length) {
+        tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state">
+      <span class="material-symbols-outlined">person_off</span>
+      <p>${filter ? 'No results found' : 'No members yet — click Add Member to get started'}</p>
+    </div></td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(m => {
+        const [bg, fg] = avatarColor(m.name);
+        const dob = m.dob ? new Date(m.dob).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : '—';
+        return `
+    <tr>
+      <td>
+        <div class="member-info">
+          <div class="member-avatar" style="background:${bg};color:${fg}">${initials(m.name)}</div>
+          <div>
+            <div class="name">${esc(m.name)}</div>
+          </div>
+        </div>
+      </td>
+      <td style="color:var(--on-muted);font-size:13px">${esc(m.email)}</td>
+      <td style="color:var(--on-muted);font-size:13px">${esc(m.phone || '—')}</td>
+      <td style="color:var(--on-muted);font-size:13px">${dob}</td>
+      <td>
+        <span class="status-chip ${m.status === 'Active' ? 'chip-active' : 'chip-inactive'}">
+          <span class="dot ${m.status === 'Active' ? 'green' : 'gray'}"></span>${m.status}
+        </span>
+      </td>
+      <td>
+        <div class="actions">
+          <button class="action-btn" onclick="openMemberModal('${m.id}')" title="Edit">
+            <span class="material-symbols-outlined" style="font-size:16px">edit</span>
+          </button>
+          <button class="action-btn del" onclick="promptDelete('member','${m.id}','${esc(m.name)}')" title="Delete">
+            <span class="material-symbols-outlined" style="font-size:16px">delete</span>
+          </button>
+        </div>
+      </td>
+    </tr>`;
+      }).join('');
+    }
+
+    function filterMembers(v) { renderMembers(v.toLowerCase()); }
+
+    // ── RENDER PAYMENTS ──
+    function renderPayments() {
+      const tbody = document.getElementById('payments-tbody');
+
+      // Stats
+      const completed = payments.filter(p => p.status === 'Completed');
+      const pending = payments.filter(p => p.status === 'Pending');
+      const totalAmt = completed.reduce((s, p) => s + p.amount, 0);
+      const pendingAmt = pending.reduce((s, p) => s + p.amount, 0);
+
+      document.getElementById('pay-total').textContent = '$' + fmt(totalAmt);
+      document.getElementById('pay-total-count').textContent = `${payments.length} transaction${payments.length !== 1 ? 's' : ''}`;
+      document.getElementById('pay-completed').textContent = '$' + fmt(totalAmt);
+      document.getElementById('pay-completed-count').textContent = `${completed.length} completed`;
+      document.getElementById('pay-pending').textContent = '$' + fmt(pendingAmt);
+      document.getElementById('pay-pending-count').textContent = `${pending.length} pending`;
+
+      document.getElementById('payments-count').textContent = `${payments.length} transaction${payments.length !== 1 ? 's' : ''}`;
+
+      if (!payments.length) {
+        tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state">
+      <span class="material-symbols-outlined">receipt_long</span>
+      <p>No payments recorded yet</p>
+    </div></td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = payments.map(p => {
+        const [bg, fg] = avatarColor(p.memberName || 'X');
+        const date = new Date(p.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        const badgeClass = { Completed: 'badge-completed', Pending: 'badge-pending', Refunded: 'badge-refunded' }[p.status] || 'badge-pending';
+        return `
+    <tr>
+      <td>
+        <div class="member-info">
+          <div class="member-avatar" style="background:${bg};color:${fg};font-size:11px">${initials(p.memberName || 'XX')}</div>
+          <span style="font-weight:500;font-size:13px">${esc(p.memberName)}</span>
+        </div>
+      </td>
+      <td style="text-align:right;font-weight:600">$${fmt(p.amount)}</td>
+      <td style="color:var(--on-muted);font-size:13px">${date}</td>
+      <td><span class="status-badge ${badgeClass}">${p.status}</span></td>
+      <td>
+        <div class="actions">
+          <button class="action-btn del" onclick="promptDelete('payment','${p.id}','payment of $${fmt(p.amount)}')" title="Delete">
+            <span class="material-symbols-outlined" style="font-size:16px">delete</span>
+          </button>
+        </div>
+      </td>
+    </tr>`;
+      }).join('');
+    }
+
+    // ── ADD PAYMENT ──
+    function populateMemberSelect() {
+      const sel = document.getElementById('pay-member');
+      const cur = sel.value;
+      sel.innerHTML = '<option value="">Select member...</option>' +
+        members.map(m => `<option value="${m.id}">${esc(m.name)}</option>`).join('');
+      if (cur) sel.value = cur;
+    }
+
+    function addPayment() {
+      const memberId = document.getElementById('pay-member').value;
+      const amtVal = parseFloat(document.getElementById('pay-amount').value);
+      const status = document.getElementById('pay-status').value;
+
+      if (!memberId) { toast('Please select a member', 'error'); return; }
+      if (!amtVal || amtVal <= 0) { toast('Please enter a valid amount', 'error'); return; }
+
+      const member = members.find(m => m.id === memberId);
+      payments.unshift({
+        id: genId(),
+        memberId,
+        memberName: member ? member.name : 'Unknown',
+        amount: amtVal,
+        status,
+        date: Date.now(),
+      });
+      savePayments();
+      document.getElementById('pay-amount').value = '';
+      document.getElementById('pay-member').value = '';
+      renderPayments();
+      renderDashboard();
+      toast('Payment recorded');
+    }
+
+    // ── DASHBOARD ──
+    function renderDashboard() {
+      const total = members.length;
+      const active = members.filter(m => m.status === 'Active').length;
+      const completedPayments = payments.filter(p => p.status === 'Completed');
+      const revenue = completedPayments.reduce((s, p) => s + p.amount, 0);
+      const pct = total ? Math.round((active / total) * 100) : 0;
+
+      document.getElementById('dash-total-members').textContent = total;
+      document.getElementById('dash-active-members').textContent = active;
+      document.getElementById('dash-total-revenue').textContent = '$' + fmt(revenue);
+      document.getElementById('dash-capacity-label').textContent = `${pct}% of total members`;
+      document.getElementById('dash-progress').style.width = pct + '%';
+
+      // Recent members
+      const recentM = members.slice(0, 5);
+      const mDiv = document.getElementById('dash-recent-members');
+      if (!recentM.length) {
+        mDiv.innerHTML = `<div class="empty-state"><span class="material-symbols-outlined">person</span><p>No members yet</p></div>`;
+      } else {
+        mDiv.innerHTML = '<div class="activity-list">' + recentM.map(m => {
+          const [bg, fg] = avatarColor(m.name);
+          return `<div class="activity-item">
+        <div class="member-avatar activity-icon" style="background:${bg};color:${fg}">${initials(m.name)}</div>
+        <div class="info">
+          <p>${esc(m.name)}</p>
+          <span>${esc(m.email)}</span>
+        </div>
+        <span class="status-chip ${m.status === 'Active' ? 'chip-active' : 'chip-inactive'}">${m.status}</span>
+      </div>`;
+        }).join('') + '</div>';
+      }
+
+      // Recent payments
+      const recentP = payments.slice(0, 5);
+      const pDiv = document.getElementById('dash-recent-payments');
+      if (!recentP.length) {
+        pDiv.innerHTML = `<div class="empty-state"><span class="material-symbols-outlined">receipt</span><p>No payments yet</p></div>`;
+      } else {
+        const badgeClass = { Completed: 'chip-done', Pending: 'chip-pending', Refunded: 'chip-inactive' };
+        pDiv.innerHTML = '<div class="activity-list">' + recentP.map(p => `
+      <div class="activity-item">
+        <div class="activity-icon" style="background:var(--surface-mid);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center">
+          <span class="material-symbols-outlined" style="font-size:18px;color:var(--on-muted)">payments</span>
+        </div>
+        <div class="info">
+          <p>${esc(p.memberName)}</p>
+          <span>$${fmt(p.amount)} · ${new Date(p.date).toLocaleDateString()}</span>
+        </div>
+        <span class="status-chip ${badgeClass[p.status] || 'chip-inactive'}">${p.status}</span>
+      </div>`).join('') + '</div>';
+      }
+    }
+
+    // ── SEARCH ──
+    function handleSearch(v) {
+      const page = document.querySelector('.page.active').id.replace('page-', '');
+      if (page === 'members') { document.getElementById('member-search').value = v; filterMembers(v); }
+    }
+
+    // ── UTILS ──
+    function fmt(n) { return Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+    function esc(str) { return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+
+    // ── INIT ──
+    renderDashboard();
+  </script>
+</body>
+
+</html>
